@@ -13,7 +13,8 @@ Galil::Galil()
 
 Galil::Galil(EmbeddedFunctions* Funcs, GCStringIn address)
 {
-	Functions = new EmbeddedFunctions;//Pointer to EmbeddedFunctions, through which all Galil Function calls will be made
+	//Functions = new EmbeddedFunctions;//Pointer to EmbeddedFunctions, through which all Galil Function calls will be made
+	Functions = Funcs;
 	g = 0; //Connection handle for the Galil, passed through most Galil function calls
 	for (int i = 0; i < 1024; ReadBuffer[i] = NULL, i++);
 	for (int i = 0; i < 3; ControlParameters[i] = 0, i++);
@@ -60,7 +61,7 @@ void Galil::DigitalByteOutput(bool bank, uint8_t value)
 	}
 	Functions->GCommand(g, Command, ReadBuffer, sizeof(ReadBuffer), 0);
 }
-// Page 73& CB:Clear Bit, SB:Setr Bit
+// Page 73 CB:Clear Bit, SB:Set Bit
 void Galil::DigitalBitOutput(bool val, uint8_t bit)			// Write single bit to digital outputs. 'bit' specifies which bit
 {
 	char Command[128] = "";
@@ -97,9 +98,9 @@ uint8_t Galil::DigitalByteInput(bool bank)	// Read either high or low byte, as s
 	if (bank == 0) {
 		for (int i = 0; i < 8; i++) {
 			Input += pow(2 * int(DigitalBitInput(i)), j);
-			j++;
+			j++; //0xFF=2^7+...+2^0
 		}
-		if (DigitalBitInput(0) == 0) {
+		if (DigitalBitInput(0) == 0) {//if 1 Byte = 0b0000 0000 => Input = 0; But 0^0 = 1 => Input = 0b0000 0001, so Input--
 			Input--;
 		}
 	}

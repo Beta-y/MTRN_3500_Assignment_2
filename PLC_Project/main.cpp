@@ -28,56 +28,57 @@ int main() {
 
     /////////****************DA******************///////
     // DigitalOutput
-    //galil->DigitalOutput(0x0000);//DEC: 0 
-    //galil->DigitalOutput(0x0063);//DEC: 99 
-    //galil->DigitalOutput(0x00FF);//DEC: 255 
-    //galil->DigitalOutput(0x0100);//DEC: 256
-    //galil->DigitalOutput(0xFFFF);//DEC: 65535
+    galil->DigitalOutput(0x0000);//DEC: 0 
+    galil->DigitalOutput(0x0063);//DEC: 99 
+    galil->DigitalOutput(0x00FF);//DEC: 255 
+    galil->DigitalOutput(0x0100);//DEC: 256
+    galil->DigitalOutput(0xFFFF);//DEC: 65535
 
     // DigitalByteOutput
-    //galil->DigitalByteOutput(0, 14);//Set lowbyte
-    //galil->DigitalByteOutput(1, 14);//Set highbyte
+    galil->DigitalByteOutput(0, 14);//Set lowbyte
+    galil->DigitalByteOutput(1, 14);//Set highbyte
 
     // DigitalBitOutput
-    //galil->DigitalBitOutput(0, 5);//Clear 5th Bit
-    //galil->DigitalBitOutput(1, 5);//Set 5th Bit
+    galil->DigitalBitOutput(0, 5);//Clear 5th Bit
+    galil->DigitalBitOutput(1, 5);//Set 5th Bit
 
     // DigitalInput
-    //uint16_t DigitalInput = galil->DigitalInput();
-    //std::cout << "DigitalInput is " << DigitalInput << std::endl;
+    uint16_t DigitalInput = galil->DigitalInput();
+    std::cout << "DigitalInput is " << DigitalInput << std::endl;
+    uint16_t DigitalInput = galil->DigitalByteInput(0) + galil->DigitalByteInput(1);// Read High+Lowyte
 
     // DigitalByteInput
-    //uint16_t DigitalByteInput = galil->DigitalByteInput(0);// Read Lowyte
-    //uint16_t DigitalByteInput = galil->DigitalByteInput(1);// Read Highyte
-    //uint16_t DigitalByteInput = galil->DigitalByteInput(0)+galil->DigitalByteInput(1);// Read High+Lowyte
-    //std::cout << "DigitalByteInput is " << DigitalByteInput << std::endl;
+    uint16_t DigitalByteInput = galil->DigitalByteInput(0);// Read Lowyte
+    uint16_t DigitalByteInput = galil->DigitalByteInput(1);// Read Highyte
+    
+    std::cout << "DigitalByteInput is " << DigitalByteInput << std::endl;
 
     // DigitalBitInput
-    /*for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++) {
         galil->DigitalBitInput(i);
     }
     for (int i = 8; i < 16; i++) {
         galil->DigitalBitInput(i);
-    }*/
+    }
 
     // AnalogInputRange
-    //galil->AnalogInputRange(0, 1);
-    //galil->AnalogInput(0);
+    galil->AnalogInputRange(0, 2);//+- 10v
+    galil->AnalogInput(0);
 
     // AnalogInput
-    //float AnalogInput = galil->AnalogInput(0);
-    //std::cout << "AnalogInput is " << AnalogInput << std::endl;
+    float AnalogInput = galil->AnalogInput(0);
+    std::cout << "AnalogInput is " << AnalogInput << std::endl;
 
     // AnalogOutput
-    /*for (int i = -10;i < 11;i++) {
+    for (int i = -10;i < 11;i++) {
         galil->AnalogOutput(7, i);
         Sleep(500);
-    }*/
+    }
 
     /////////****************DA******************///////
 
     // Check Successful Write
-    /*galil->DigitalOutput(65535);
+    galil->DigitalOutput(65535);
     std::cout << "Check " << galil->CheckSuccessfulWrite() << std::endl;
     galil->DigitalOutput(65536);
     std::cout << "Check " << galil->CheckSuccessfulWrite() << std::endl;
@@ -94,7 +95,7 @@ int main() {
     galil->AnalogOutput(7, 10);
     std::cout << "Check " << galil->CheckSuccessfulWrite() << std::endl;
     galil->AnalogOutput(7, 20);
-    std::cout << "Check " << galil->CheckSuccessfulWrite() << std::endl;*/
+    std::cout << "Check " << galil->CheckSuccessfulWrite() << std::endl;
 
     // ReadEncoder
     //galil->AnalogOutput(7, 1);
