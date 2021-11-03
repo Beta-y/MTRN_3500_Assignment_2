@@ -98,41 +98,40 @@ int main() {
     std::cout << "Check " << galil->CheckSuccessfulWrite() << std::endl;
 
     // ReadEncoder
-    //galil->AnalogOutput(7, 1);
+    //galil->AnalogOutput(7, 1);// Start the motor, voltage = 1v
     //Sleep(1000);
     //galil->ReadEncoder();
 
     // WriteEncoder
-    //galil->AnalogOutput(7, 0);
+    //galil->AnalogOutput(7, 0);// Stop the motor
     //Sleep(1000);
-    //galil->WriteEncoder();
+    //galil->WriteEncoder();  // Manually Set the encoder value to zero
     //galil->ReadEncoder();
 
     // PositionControl
-    /*galil->AnalogOutput(7, 0);
-    galil->WriteEncoder();
-    galil->setSetPoint(5000);
-    galil->setKp(1.0);
+    /*galil->AnalogOutput(7, 0);// Stop the motor
+    galil->WriteEncoder();    // Manually Set the encoder value to zero
+    galil->setSetPoint(5000); // Counts, set the desired setpoint for control loops, 
+    galil->setKp(1.0);        // Pure proportional control
     galil->setKi(0.0);
     galil->setKd(0.0);
-    galil->PositionControl(1);*/
+    galil->PositionControl(1);*/  // Enable
 
     // SpeedControl
-    /*galil->AnalogOutput(7, 0);
+    /*galil->AnalogOutput(7, 0);// Stop the motor
     galil->WriteEncoder();
-    galil->setSetPoint(5000);
-    galil->setKp(1.0);
+    galil->setSetPoint(5000); // Counts/sec, set the desired setpoint for control loops, 
+    galil->setKp(1.0);        // Pure proportional control
     galil->setKi(0.0);
     galil->setKd(0.0);
-    galil->SpeedControl(1);*/
+    galil->SpeedControl(1);*/    // Enable
 
     // Operator Overload
-    //cout << *galil;
+    //cout << *galil;           // Print out the output of GInfo and GVersion
 
     // Blink
-    /*while (!_kbhit()) {
-        Blink(galil);
-    }*/
+    //Blink(galil);
+
 
     // Travel
     //Travel(galil);
@@ -148,38 +147,57 @@ int main() {
 
 void Blink(Galil* galil)
 {
-    galil->DigitalOutput(65535);
-    Sleep(500);
-    galil->DigitalOutput(0);
-    Sleep(500);
+    uint8_t state = 0b00000000;
+    while (!_kbhit())
+    {
+        state = ~state;
+        galil->DigitalOutput(state);// 8bits
+        Sleep(500);
+    }
 }
 
 void Travel(Galil* galil)
 {
-    for (int i = 0; i < 7; i++) {
-        galil->DigitalBitOutput(1, i);
+    uint8_t state = 0b00000001;
+    for (int i = 0; i < 8; i++)
+    {
+        galil->DigitalOutput(state);// 8bits
+        state = state << 1;
         Sleep(500);
-        galil->DigitalBitOutput(0, i);
     }
-
-    galil->DigitalBitOutput(1, 7);
-    Sleep(500);
-    galil->DigitalBitOutput(0, 7);
-
-    for (int i = 6; i >= 0; i--) {
-        galil->DigitalBitOutput(1, i);
+    for (int i = 0; i < 8; i++)
+    {
+        galil->DigitalOutput(state);// 8bits
+        state = state >> 1;
         Sleep(500);
-        galil->DigitalBitOutput(0, i);
     }
 }
+//void Travel(Galil* galil){
+//    for (int i = 0; i < 7; i++) {
+//        galil->DigitalBitOutput(1, i);// Set i Bit
+//        Sleep(500);
+//        galil->DigitalBitOutput(0, i);// Clear i Bit
+//    }
+//    
+//    galil->DigitalBitOutput(1, 7);
+//    Sleep(500);
+//    galil->DigitalBitOutput(0, 7);
+//
+//    for (int i = 6; i >= 0; i--) {
+//        galil->DigitalBitOutput(1, i);
+//        Sleep(500);
+//        galil->DigitalBitOutput(0, i);
+//    }
+//}
 
+// Press number 1-8 to toggle choosed bit
 void Toggle(Galil* galil) {
     galil->DigitalOutput(0b01110111);
     int key = 1;
     while (key != 0) {
-        key = _getch() - 48;
+        key = _getch() - 48;// ASCII "0" <-> Dec: 48
         std::cout << "Key = " << key << std::endl;
-        int toggle = galil->DigitalBitInput(key - 1);
+        bool toggle = galil->DigitalBitInput(key - 1);
         std::cout << "Toggle = " << toggle << std::endl;
         galil->DigitalBitOutput(!toggle, key - 1);
     }

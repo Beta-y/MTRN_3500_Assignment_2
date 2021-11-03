@@ -191,6 +191,7 @@ int Galil::ReadEncoder()					// Read from Encoder
 	encoder = std::stoi(Response->c_str());
 	return encoder;
 }
+// PositionControl & PositionControl's common setpoint
 void Galil::setSetPoint(int s)			// Set the desired setpoint for control loops, counts or counts/sec
 {
 	setPoint = s;
