@@ -45,11 +45,11 @@ int main() {
     // DigitalInput
     uint16_t DigitalInput = galil->DigitalInput();
     std::cout << "DigitalInput is " << DigitalInput << std::endl;
-    uint16_t DigitalInput = galil->DigitalByteInput(0) + galil->DigitalByteInput(1);// Read High+Lowyte
+    DigitalInput = galil->DigitalByteInput(0) + galil->DigitalByteInput(1);// Read High+Lowyte
 
     // DigitalByteInput
     uint16_t DigitalByteInput = galil->DigitalByteInput(0);// Read Lowyte
-    uint16_t DigitalByteInput = galil->DigitalByteInput(1);// Read Highyte
+    DigitalByteInput = galil->DigitalByteInput(1);// Read Highyte
     
     std::cout << "DigitalByteInput is " << DigitalByteInput << std::endl;
 

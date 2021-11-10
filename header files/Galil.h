@@ -1,5 +1,5 @@
 /*****************
-Galil.h v5
+Galil.h v6
 JAMES STEVENS 2020
 *****************/
 
@@ -54,18 +54,19 @@ class Galil {
 		void AnalogInputRange(uint8_t channel, uint8_t range);	// Configure the range of the input channel with
 																// the desired range code
 
-		// ENCODER / CONTROL FUNCTIONS
-		void WriteEncoder();				// Manually Set the encoder value to zero
-		int ReadEncoder();					// Read from Encoder
-		void setSetPoint(int s);			// Set the desired setpoint for control loops, counts or counts/sec
-		void setKp(double gain);			// Set the proportional gain of the controller used in controlLoop()
-		void setKi(double gain);			// Set the integral gain of the controller used in controlLoop()
-		void setKd(double gain);			// Set the derivative gain of the controller used in controlLoop()
-		void PositionControl(bool debug);	// Run the control loop. ReadEncoder() is the input to the loop. The motor is the output.
-											// The loop will run using the PID values specified in the data of this object, and has an 
-											// automatic timeout of 10s. You do not need to implement this function, it is defined in
-											// GalilControl.lib. debug = 1 for debugging (it will print some values).
-		void SpeedControl(bool debug);		// same as above. Setpoint interpreted as counts per second
+	// ENCODER / CONTROL FUNCTIONS
+		void WriteEncoder();								// Manually Set the encoder value to zero
+		int ReadEncoder();									// Read from Encoder
+		void setSetPoint(int s);							// Set the desired setpoint for control loops, counts or counts/sec
+		void setKp(double gain);							// Set the proportional gain of the controller used in controlLoop()
+		void setKi(double gain);							// Set the integral gain of the controller used in controlLoop()
+		void setKd(double gain);							// Set the derivative gain of the controller used in controlLoop()
+		void PositionControl(bool debug, int Motorchannel);	// Run the control loop. ReadEncoder() is the input to the loop. The motor is the output.
+															// The loop will run using the PID values specified in the data of this object, and has an 
+															// automatic timeout of 10s. You do not need to implement this function, it is defined in
+															// GalilControl.lib
+		void SpeedControl(bool debug, int Motorchannel);	// same as above. Setpoint interpreted as counts per second
+
 
 		// Operator overload for '<<' operator. So the user can say cout << Galil; This function should print out the
 		// output of GInfo and GVersion, with two newLines after each.
